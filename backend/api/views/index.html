@@ -1,0 +1,23 @@
+{{template "header"}}
+    <table class="table table-borderless table-striped">
+        <form method="post" action="/user/post">
+            <label>氏名</label><input type="text" name="name">
+            <label>Eメール</label><input type="text" name="email">
+            <input type="submit" name="" value="post">
+        </form>
+        <tr class="table-primary">
+            <th>氏名</th>
+            <th>Eメール</th>
+            <th>作成日</th>
+            <th>削除</th>
+        </tr>
+    {{range .}}
+        <tr>
+            <td>{{.Name}}</td>
+            <td>{{.Email}}</td>
+            <td>{{.CreatedAt}}</td>
+            <td><a href="/user/delete/{{.ID}}">削除</a></td>
+        </tr>
+    {{end}}
+    </table>
+{{template "footer"}}

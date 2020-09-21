@@ -1,0 +1,36 @@
+version: '3'
+services:
+    node:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        volumes:
+            - ./frontend:/usr/src/app
+        ports:
+            - "3000:3000"
+        stdin_open: true
+    go:
+      build: 
+        context: .
+        dockerfile: ./backend/api/Dockerfile
+      ports:
+        - "8080:8080"
+        - "8888:8888"
+      volumes:
+        - ./backend/api:/go/src
+      depends_on:
+        - mysql
+    mysql:
+      build: ./backend/db
+      image: mysql:5.7
+      restart: always
+      environment:
+        MYSQL_USER: root
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: sample
+      hostname: mysql
+      ports: 
+        - "3306:3306"
+      volumes:
+        - ./backend/db/conf.d:/etc/mysql/conf.d
+        - ./backend/db/log/mysql:/var/log/mysql
